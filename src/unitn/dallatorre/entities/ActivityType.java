@@ -1,11 +1,13 @@
 package unitn.dallatorre.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Id;
+import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -68,5 +70,11 @@ public class ActivityType implements Serializable {
 		ActivityType a = em.find(ActivityType.class, id);
 		PersonActivitiesDao.instance.closeConnections(em);
 		return a;
+	}
+	
+	public static List<ActivityType> getAllTypes() {
+		EntityManager em = PersonActivitiesDao.instance.createEntityManager();
+		TypedQuery<ActivityType> query = em.createQuery("SELECT type FROM ActivityType type",ActivityType.class);
+		return query.getResultList();
 	}
 }
