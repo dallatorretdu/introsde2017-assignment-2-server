@@ -31,7 +31,7 @@ public class Activity implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
     @XmlAttribute(name = "id", required = true)
-    protected int id;
+    protected Integer id;
 	
 	@XmlElement(required = true)
     protected String name;
@@ -47,10 +47,10 @@ public class Activity implements Serializable{
     @XmlElement(required = true)
     protected Date startdate;
     
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {

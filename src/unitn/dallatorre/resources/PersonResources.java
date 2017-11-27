@@ -1,6 +1,7 @@
 package unitn.dallatorre.resources;
 
 import unitn.dallatorre.entities.Activity;
+import unitn.dallatorre.entities.ActivityType;
 import unitn.dallatorre.entities.People;
 import unitn.dallatorre.entities.Person;
 
@@ -46,24 +47,15 @@ public class PersonResources extends ResponseBuilder {
 			return throwNotFound404();
 		}
 		for (final Person person : personList) {
-	          Activity latestActivity = person.getActivitypreference().get(person.getActivitypreference().size()-1);
-	          latestActivity.setType(null);
-	          person.getActivitypreference().clear();
-	          person.getActivitypreference().add(latestActivity);
+			if(person.getActivitypreference().size()>0) {
+		        Activity latestActivity = person.getActivitypreference().get(person.getActivitypreference().size()-1);
+		        latestActivity.setType(null);
+		        person.getActivitypreference().clear();
+		        person.getActivitypreference().add(latestActivity);
+			}
 		}
 		return throwSuccess200(people);
 	}
-	
-	
-	/*@POST
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response newPerson(Person person) throws IOException {
-		System.out.println("Creating new person...");	
-		Person p = Person.savePerson(person);
-		if (p == null); //TODO
-		return Response.status(Response.Status.CREATED).entity(p).build();
-	}*/
 	
 	@GET
 	@Path("{personId}")
@@ -92,8 +84,36 @@ public class PersonResources extends ResponseBuilder {
 		databasePerson.setFirstname(person.getFirstname());
 		databasePerson.setLastname(person.getLastname());
 		databasePerson.setBirthdate(person.getBirthdate());
-		databasePerson = databasePerson.updatePerson(databasePerson);
+		databasePerson = Person.updatePerson(databasePerson);
 		return throwSuccess200(databasePerson);
+	}
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response newPerson(Person person) throws IOException {	
+		if (person.getId() != null) {
+			return throwNotAcceptable406("cannot generate a person with a given ID");
+		}
+		if (person.getActivitypreference() != null) {
+			List<Activity> activityPreference = person.getActivitypreference();
+			for (Activity activity : activityPreference) {
+				if(activity.getId() != null) {
+					return throwNotAcceptable406("cannot generate an activity with a given ID");
+				}
+				if(activity.getType() == null) {
+					return throwNotAcceptable406("an activity should have a type associated");
+				}
+				ActivityType activityType = ActivityType.getById(activity.getType().getType());
+				if(activityType == null) {
+					return throwNotAcceptable406("activity type not recognized");
+				}
+				activity.setType(activityType);
+			}
+		}
+		Person p = Person.updatePerson(person);
+		
+		return throwSuccess200(p);
 	}
 	
 }
