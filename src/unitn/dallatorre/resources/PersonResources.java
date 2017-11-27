@@ -90,7 +90,6 @@ public class PersonResources extends ResponseBuilder {
 		activities.setActivity(person.getActivitypreference());
 		activities.filterActivities(activityType);
 		if( beginDate != null && endDate != null) {
-			System.out.println("EUREKA " + endDate);
 			activities.filterActivities(parseDate(beginDate),parseDate(endDate));
 		}
 		
