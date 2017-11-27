@@ -2,7 +2,7 @@ package unitn.dallatorre.resources;
 
 import unitn.dallatorre.entities.Activity;
 import unitn.dallatorre.entities.ActivityType;
-import unitn.dallatorre.entities.People;
+import unitn.dallatorre.entities.PeopleWrapper;
 import unitn.dallatorre.entities.Person;
 import unitn.dallatorre.resources.exception.HelpMeExceptionMapper;
 
@@ -68,7 +68,7 @@ public class Initializer extends ResponseBuilder {
 		personList.add(p3);
 		personList.add(p4);
 		personList.add(p5);
-		People people = new People();
+		PeopleWrapper people = new PeopleWrapper();
 		people.setPersons(personList);
 		
 		return throwSuccess200(people);

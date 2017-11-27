@@ -7,21 +7,21 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name="People")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class People implements Serializable{
+public class PeopleWrapper implements Serializable{
 	
-	protected List<Person> persons;
+	protected List<Person> person;
 	
 	public List<Person> getPersons() {
-		return persons;
+		return person;
 	}
 	
 	public void setPersons(List<Person> personList) {
-		persons = personList;
+		person = personList;
 	}
 	
 	public void readAllPersons() {
-		persons = Person.getAllPersons();
+		person = Person.getAllPersons();
 	}
 }

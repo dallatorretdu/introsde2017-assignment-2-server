@@ -2,7 +2,7 @@ package unitn.dallatorre.resources;
 
 import unitn.dallatorre.entities.Activity;
 import unitn.dallatorre.entities.ActivityType;
-import unitn.dallatorre.entities.People;
+import unitn.dallatorre.entities.PeopleWrapper;
 import unitn.dallatorre.entities.Person;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class PersonResources extends ResponseBuilder {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response hello() {
-		People people = new People();
+		PeopleWrapper people = new PeopleWrapper();
 		people.readAllPersons();
 		List<Person> personList = people.getPersons();
 		if(personList.size()==0) {
@@ -124,6 +124,12 @@ public class PersonResources extends ResponseBuilder {
 		Person person = Person.getPersonById(id);
 		if(person == null) {
 			return throwNotFound404();
+		}
+		if (person.getActivitypreference() != null) {
+			List<Activity> activityPreference = person.getActivitypreference();
+			for (Activity activity : activityPreference) {
+				activity.setType(null);
+			}
 		}
 		Person.removePerson(person);
 		return throwNoContent204();
