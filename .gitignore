@@ -6,23 +6,28 @@
 !ivy.xml
 !README.md
 !.gitignore
+
+!WebContent/
+!WebContent/*/
+!WebContent/*/*/
+!WebContent/*/*/*/
 !WebContent/WEB-INF/web.xml
 !WebContent/WEB-INF/classes/META-INF/persistence.xml
 
-!src/
-!src/*/
-!src/*/*/
-!src/*/*/*/
+!src/*
+!src/*/*
+!src/*/*/*
+!src/*/*/*/*
 !src/*/*/*/*
 !src/*/*/*/*/*
 !src/*/*/*/*/*/*
 !src/*/*/*/*/*/*/*
 !src/*/*/*/*/*/*/*/*
 
-!tests/
-!tests/*/
-!tests/*/*/
-!tests/*/*/*/
+!tests/*
+!tests/*/*
+!tests/*/*/*
+!tests/*/*/*/*
 !tests/*/*/*/*
 !tests/*/*/*/*/*
 !tests/*/*/*/*/*/*
