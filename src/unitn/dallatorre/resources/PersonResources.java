@@ -54,7 +54,7 @@ public class PersonResources extends ResponseBuilder {
 	}
 	
 	
-	@POST
+	/*@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response newPerson(Person person) throws IOException {
@@ -62,13 +62,18 @@ public class PersonResources extends ResponseBuilder {
 		Person p = Person.savePerson(person);
 		if (p == null); //TODO
 		return Response.status(Response.Status.CREATED).entity(p).build();
-	}
+	}*/
 	
 	@GET
 	@Path("{personId}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Person getPerson(@PathParam("personId") int id) {		
+	public Response getPerson(@PathParam("personId") int id) {		
 		Person person = Person.getPersonById(id);
-		return person;
+		if(person == null) {
+			return throw404();
+		}
+		return throw200(person);
 	}
+	
+	
 }
