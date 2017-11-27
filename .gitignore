@@ -15,11 +15,15 @@
 !WebContent/WEB-INF/classes/META-INF/persistence.xml
 
 !src/*
+!src/*/
 !src/*/*
+!src/*/*/
 !src/*/*/*
+!src/*/*/*/
 !src/*/*/*/*
-!src/*/*/*/*
+!src/*/*/*/*/
 !src/*/*/*/*/*
+!src/*/*/*/*/*/
 !src/*/*/*/*/*/*
 !src/*/*/*/*/*/*/*
 !src/*/*/*/*/*/*/*/*
