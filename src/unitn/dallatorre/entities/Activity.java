@@ -120,5 +120,10 @@ public class Activity implements Serializable{
 		PersonActivitiesDao.instance.closeConnections(em);
 		return a;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return (this.getId().equals(((Activity) obj).getId())) && (this.getName().equals(((Activity) obj).getName()));
+	}
 
 }

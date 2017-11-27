@@ -38,7 +38,6 @@ public class ActivityWrapper implements Serializable{
 	public List<Activity> filterActivities(int id) {
 		List<Activity> filteredActivities = new ArrayList<Activity>();
 		for (final Activity activity : activity) {
-			System.out.println("ID " + activity.getId());
 			if (activity.getId() == id) {
 				filteredActivities.add(activity);
 			}
