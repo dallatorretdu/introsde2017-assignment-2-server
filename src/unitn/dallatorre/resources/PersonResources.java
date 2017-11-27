@@ -1,5 +1,6 @@
 package unitn.dallatorre.resources;
 
+import unitn.dallatorre.entities.Activity;
 import unitn.dallatorre.entities.People;
 import unitn.dallatorre.entities.Person;
 
@@ -39,10 +40,16 @@ public class PersonResources extends ResponseBuilder {
 	public Response hello() {
 		People people = new People();
 		people.readAllPersons();
-		if(people.getPersons().size()==0) {
+		List<Person> personList = people.getPersons();
+		if(personList.size()==0) {
 			return throw404();
 		}
-		
+		for (final Person person : personList) {
+	          Activity latestActivity = person.getActivitypreference().get(person.getActivitypreference().size()-1);
+	          latestActivity.setType(null);
+	          person.getActivitypreference().clear();
+	          person.getActivitypreference().add(latestActivity);
+		}
 		return throw200(people);
 	}
 	
@@ -62,7 +69,6 @@ public class PersonResources extends ResponseBuilder {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Person getPerson(@PathParam("personId") int id) {		
 		Person person = Person.getPersonById(id);
-		System.out.println("Person: "+person.toString());
 		return person;
 	}
 }

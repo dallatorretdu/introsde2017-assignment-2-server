@@ -44,7 +44,7 @@ public class Person implements Serializable{
     private String lastname;
     @XmlElement(required = true)
     private Date birthdate;   
-    @XmlElement(required = true)
+    @XmlElement(required = false)
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Activity> activitypreference;
 
