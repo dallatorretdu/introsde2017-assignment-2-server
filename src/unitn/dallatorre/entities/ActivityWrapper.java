@@ -2,6 +2,7 @@ package unitn.dallatorre.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -39,6 +40,18 @@ public class ActivityWrapper implements Serializable{
 		List<Activity> filteredActivities = new ArrayList<Activity>();
 		for (final Activity activity : activity) {
 			if (activity.getId() == id) {
+				filteredActivities.add(activity);
+			}
+		}
+		activity.clear();
+		activity.addAll(filteredActivities);
+		return getActivity();
+	}
+
+	public List<Activity> filterActivities(Date beginDate, Date endDate) {
+		List<Activity> filteredActivities = new ArrayList<Activity>();
+		for (final Activity activity : activity) {
+			if (activity.isInBetween(beginDate, endDate)) {
 				filteredActivities.add(activity);
 			}
 		}

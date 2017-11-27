@@ -125,5 +125,8 @@ public class Activity implements Serializable{
 	public boolean equals(Object obj) {
 		return (this.getId().equals(((Activity) obj).getId())) && (this.getName().equals(((Activity) obj).getName()));
 	}
+	public boolean isInBetween(Date beginDate, Date endDate) {
+		return (startdate.before(endDate) && startdate.after(beginDate));
+	}
 
 }

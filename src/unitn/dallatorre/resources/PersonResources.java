@@ -7,7 +7,10 @@ import unitn.dallatorre.entities.PeopleWrapper;
 import unitn.dallatorre.entities.Person;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -18,6 +21,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -74,7 +78,7 @@ public class PersonResources extends ResponseBuilder {
 	@GET
 	@Path("{personId}/{activity_type}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response getPersonActivity(@PathParam("personId") int id, @PathParam("activity_type") String givenActivityType) {		
+	public Response getPersonActivityWithDate(@QueryParam("before") String endDate, @QueryParam("after") String beginDate, @PathParam("personId") int id, @PathParam("activity_type") String givenActivityType) {		
 		Person person = Person.getPersonById(id);
 		ActivityType activityType = ActivityType.getById(givenActivityType);
 		
@@ -85,6 +89,10 @@ public class PersonResources extends ResponseBuilder {
 		ActivityWrapper activities = new ActivityWrapper();
 		activities.setActivity(person.getActivitypreference());
 		activities.filterActivities(activityType);
+		if( beginDate != null && endDate != null) {
+			System.out.println("EUREKA " + endDate);
+			activities.filterActivities(parseDate(beginDate),parseDate(endDate));
+		}
 		
 		return returnSuccess200(activities);
 	}
@@ -226,4 +234,11 @@ public class PersonResources extends ResponseBuilder {
 		return returnNoContent204();
 	}
 	
+	public static Date parseDate(String date) {
+	     try {
+	         return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+	     } catch (ParseException e) {
+	         return null;
+	     }
+	  }
 }
