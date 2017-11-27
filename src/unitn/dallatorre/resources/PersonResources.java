@@ -6,10 +6,10 @@ import unitn.dallatorre.entities.People;
 import unitn.dallatorre.entities.Person;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -39,6 +39,7 @@ public class PersonResources extends ResponseBuilder {
 	Request request;
 	
 	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response hello() {
 		People people = new People();
 		people.readAllPersons();
@@ -113,7 +114,19 @@ public class PersonResources extends ResponseBuilder {
 		}
 		Person p = Person.updatePerson(person);
 		
-		return throwSuccess200(p);
+		return throwCreated201(p);
+	}
+	
+	@DELETE
+	@Path("{personId}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response deletePerson(@PathParam("personId") int id) {		
+		Person person = Person.getPersonById(id);
+		if(person == null) {
+			return throwNotFound404();
+		}
+		Person.removePerson(person);
+		return throwNoContent204();
 	}
 	
 }
