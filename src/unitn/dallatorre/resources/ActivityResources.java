@@ -24,8 +24,8 @@ public class ActivityResources extends ResponseBuilder{
 		ActivityTypesWrapper activityTypes = new ActivityTypesWrapper();
 		activityTypes.readAllTypes();
 		if (activityTypes.getActivityTypes() == null || activityTypes.getActivityTypes().size()==0) {
-			return throwNotFound404();
+			return returnNotFound404();
 		}
-		return throwSuccess200(activityTypes);
+		return returnSuccess200(activityTypes);
 	}
 }

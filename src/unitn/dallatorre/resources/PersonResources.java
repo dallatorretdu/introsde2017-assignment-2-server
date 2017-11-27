@@ -45,7 +45,7 @@ public class PersonResources extends ResponseBuilder {
 		people.readAllPersons();
 		List<Person> personList = people.getPersons();
 		if(personList.size()==0) {
-			return throwNotFound404();
+			return returnNotFound404();
 		}
 		for (final Person person : personList) {
 			if(person.getActivitypreference().size()>0) {
@@ -55,7 +55,7 @@ public class PersonResources extends ResponseBuilder {
 		        person.getActivitypreference().add(latestActivity);
 			}
 		}
-		return throwSuccess200(people);
+		return returnSuccess200(people);
 	}
 	
 	@GET
@@ -64,9 +64,9 @@ public class PersonResources extends ResponseBuilder {
 	public Response getPerson(@PathParam("personId") int id) {		
 		Person person = Person.getPersonById(id);
 		if(person == null) {
-			return throwNotFound404();
+			return returnNotFound404();
 		}
-		return throwSuccess200(person);
+		return returnSuccess200(person);
 	}
 	
 	@PUT
@@ -75,18 +75,18 @@ public class PersonResources extends ResponseBuilder {
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response updatePerson(@PathParam("personId") int id, Person person) throws IOException {
 		if(id != person.getId()) {
-			return throwBadRequest400("Given ID and new ID cannot be different");
+			return returnBadRequest400("Given ID and new ID cannot be different");
 		}
 		Person databasePerson = Person.getPersonById(id);
 		if (databasePerson == null) {
-			return throwNotAcceptable406("Requested person not found");
+			return returnNotAcceptable406("Requested person not found");
 		}
 		
 		databasePerson.setFirstname(person.getFirstname());
 		databasePerson.setLastname(person.getLastname());
 		databasePerson.setBirthdate(person.getBirthdate());
 		databasePerson = Person.updatePerson(databasePerson);
-		return throwSuccess200(databasePerson);
+		return returnSuccess200(databasePerson);
 	}
 	
 	@POST
@@ -94,27 +94,27 @@ public class PersonResources extends ResponseBuilder {
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response newPerson(Person person) throws IOException {	
 		if (person.getId() != null) {
-			return throwNotAcceptable406("cannot generate a person with a given ID");
+			return returnNotAcceptable406("cannot generate a person with a given ID");
 		}
 		if (person.getActivitypreference() != null) {
 			List<Activity> activityPreference = person.getActivitypreference();
 			for (Activity activity : activityPreference) {
 				if(activity.getId() != null) {
-					return throwNotAcceptable406("cannot generate an activity with a given ID");
+					return returnNotAcceptable406("cannot generate an activity with a given ID");
 				}
 				if(activity.getType() == null) {
-					return throwNotAcceptable406("an activity should have a type associated");
+					return returnNotAcceptable406("an activity should have a type associated");
 				}
 				ActivityType activityType = ActivityType.getById(activity.getType().getType());
 				if(activityType == null) {
-					return throwNotAcceptable406("activity type not recognized");
+					return returnNotAcceptable406("activity type not recognized");
 				}
 				activity.setType(activityType);
 			}
 		}
 		Person p = Person.updatePerson(person);
 		
-		return throwCreated201(p);
+		return returnCreated201(p);
 	}
 	
 	@DELETE
@@ -123,7 +123,7 @@ public class PersonResources extends ResponseBuilder {
 	public Response deletePerson(@PathParam("personId") int id) {		
 		Person person = Person.getPersonById(id);
 		if(person == null) {
-			return throwNotFound404();
+			return returnNotFound404();
 		}
 		if (person.getActivitypreference() != null) {
 			List<Activity> activityPreference = person.getActivitypreference();
@@ -132,7 +132,7 @@ public class PersonResources extends ResponseBuilder {
 			}
 		}
 		Person.removePerson(person);
-		return throwNoContent204();
+		return returnNoContent204();
 	}
 	
 }
