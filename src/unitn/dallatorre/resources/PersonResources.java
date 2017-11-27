@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -42,7 +43,7 @@ public class PersonResources extends ResponseBuilder {
 		people.readAllPersons();
 		List<Person> personList = people.getPersons();
 		if(personList.size()==0) {
-			return throw404();
+			return throwNotFound404();
 		}
 		for (final Person person : personList) {
 	          Activity latestActivity = person.getActivitypreference().get(person.getActivitypreference().size()-1);
@@ -50,7 +51,7 @@ public class PersonResources extends ResponseBuilder {
 	          person.getActivitypreference().clear();
 	          person.getActivitypreference().add(latestActivity);
 		}
-		return throw200(people);
+		return throwSuccess200(people);
 	}
 	
 	
@@ -70,10 +71,29 @@ public class PersonResources extends ResponseBuilder {
 	public Response getPerson(@PathParam("personId") int id) {		
 		Person person = Person.getPersonById(id);
 		if(person == null) {
-			return throw404();
+			return throwNotFound404();
 		}
-		return throw200(person);
+		return throwSuccess200(person);
 	}
 	
+	@PUT
+	@Path("{personId}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response updatePerson(@PathParam("personId") int id, Person person) throws IOException {
+		if(id != person.getId()) {
+			return throwBadRequest400("Given ID and new ID cannot be different");
+		}
+		Person databasePerson = Person.getPersonById(id);
+		if (databasePerson == null) {
+			return throwNotAcceptable406("Requested person not found");
+		}
+		
+		databasePerson.setFirstname(person.getFirstname());
+		databasePerson.setLastname(person.getLastname());
+		databasePerson.setBirthdate(person.getBirthdate());
+		databasePerson = databasePerson.updatePerson(databasePerson);
+		return throwSuccess200(databasePerson);
+	}
 	
 }

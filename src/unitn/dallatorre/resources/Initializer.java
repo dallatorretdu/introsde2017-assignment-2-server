@@ -71,7 +71,7 @@ public class Initializer extends ResponseBuilder {
 		People people = new People();
 		people.setPersons(personList);
 		
-		return throw200(people);
+		return throwSuccess200(people);
 		
 	}
 	

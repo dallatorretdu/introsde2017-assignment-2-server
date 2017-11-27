@@ -8,12 +8,20 @@ public class ResponseBuilder {
 		super();
 	}
 
-	protected Response throw404() {
+	protected Response throwNotFound404() {
 		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
-	protected Response throw200(Object o) {
+	protected Response throwSuccess200(Object o) {
 		return Response.status(Response.Status.OK).entity(o).build();
+	}
+	
+	protected Response throwNotAcceptable406(Object o) {
+		return Response.status(Response.Status.NOT_ACCEPTABLE).entity(o).build();
+	}
+	
+	protected Response throwBadRequest400(Object o) {
+		return Response.status(Response.Status.NOT_ACCEPTABLE).entity(o).build();
 	}
 
 }
