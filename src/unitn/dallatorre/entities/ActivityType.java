@@ -77,4 +77,9 @@ public class ActivityType implements Serializable {
 		TypedQuery<ActivityType> query = em.createQuery("SELECT type FROM ActivityType type",ActivityType.class);
 		return query.getResultList();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return this.getType().equals(((ActivityType) obj).getType());
+	}
 }

@@ -41,7 +41,7 @@ public class Activity implements Serializable{
     protected String place;
     
     @XmlElement(required = true)
-    @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.MERGE)
     protected ActivityType type;
     
     @XmlElement(required = true)

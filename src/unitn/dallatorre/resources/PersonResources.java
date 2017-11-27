@@ -2,10 +2,12 @@ package unitn.dallatorre.resources;
 
 import unitn.dallatorre.entities.Activity;
 import unitn.dallatorre.entities.ActivityType;
+import unitn.dallatorre.entities.ActivityWrapper;
 import unitn.dallatorre.entities.PeopleWrapper;
 import unitn.dallatorre.entities.Person;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -69,6 +71,43 @@ public class PersonResources extends ResponseBuilder {
 		return returnSuccess200(person);
 	}
 	
+	@GET
+	@Path("{personId}/{activity_type}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response getPerson(@PathParam("personId") int id, @PathParam("activity_type") String givenActivityType) {		
+		Person person = Person.getPersonById(id);
+		ActivityType activityType = ActivityType.getById(givenActivityType);
+		
+		if(person == null || activityType == null) {
+			return returnNotFound404();
+		}
+		
+		ActivityWrapper activities = new ActivityWrapper();
+		activities.setActivity(person.getActivitypreference());
+		activities.filterActivities(activityType);
+		
+		return returnSuccess200(activities);
+	}
+	
+	@GET
+	@Path("{personId}/{activity_type}/{activity_id}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response getPerson(@PathParam("personId") int id, @PathParam("activity_type") String givenActivityType, @PathParam("activity_id") int activityId) {		
+		Person person = Person.getPersonById(id);
+		ActivityType activityType = ActivityType.getById(givenActivityType);
+		
+		if(person == null || activityType == null) {
+			return returnNotFound404();
+		}
+		
+		ActivityWrapper activities = new ActivityWrapper();
+		activities.setActivity(person.getActivitypreference());
+		activities.filterActivities(activityType);
+		activities.filterActivities(activityId);
+		
+		return returnSuccess200(activities);
+	}
+	
 	@PUT
 	@Path("{personId}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -115,6 +154,37 @@ public class PersonResources extends ResponseBuilder {
 		Person p = Person.updatePerson(person);
 		
 		return returnCreated201(p);
+	}
+	
+	@POST
+	@Path("{personId}/{activity_type}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response postPersonActivity(Activity inputActivity, @PathParam("personId") int id, @PathParam("activity_type") String givenActivityType) {		
+		Person person = Person.getPersonById(id);
+		ActivityType activityType = ActivityType.getById(givenActivityType);
+		
+		if(person == null || activityType == null) {
+			return returnNotAcceptable406("Cannot generate a new activity for an unexisting person or type");
+		}
+		if(inputActivity.getId() != null) {
+			return returnNotAcceptable406("Cannot generate a new activity with a given ID");
+		}
+		if(inputActivity.getType() != null && !inputActivity.getType().getType().equals(activityType)) {
+			return returnNotAcceptable406("Incongruency between given Type and Type in body");
+		}
+		Activity newActivity = new Activity();
+		newActivity.setType(activityType);
+		newActivity.setName(inputActivity.getName());
+		newActivity.setPlace(inputActivity.getPlace());
+		newActivity.setStartdate(inputActivity.getStartdate());
+		
+		person.getActivitypreference().add(newActivity);
+		person = Person.updatePerson(person);
+		
+		ActivityWrapper activities = new ActivityWrapper();
+		activities.setActivity(person.getActivitypreference());
+		
+		return returnSuccess200(activities);
 	}
 	
 	@DELETE

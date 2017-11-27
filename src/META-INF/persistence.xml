@@ -14,6 +14,7 @@
 			
 	        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"></property>
 	        <property name="hibernate.hbm2ddl.auto" value="update"/>
+	        <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
 	        <!--
 	        <property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
 			<property name="eclipselink.ddl-generation.output-mode" value="database" />
