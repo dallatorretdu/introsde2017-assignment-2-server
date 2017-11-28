@@ -6,14 +6,18 @@
 		<class>unitn.dallatorre.entities.ActivityType</class>
 	    <properties>
 	        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-	        <!-- <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-75-235-2.eu-west-1.compute.amazonaws.com:5432/d5qmr8jfuad918" /> -->
-	        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/d5qmr8jfuad918" />
-	        <!-- <property name="javax.persistence.jdbc.user" value="fdfwltoyyatrev"/> -->
-	        <property name="javax.persistence.jdbc.user" value="postgres"/>
+	        
+	        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-75-235-2.eu-west-1.compute.amazonaws.com:5432/d5qmr8jfuad918" />
+	        <property name="javax.persistence.jdbc.user" value="fdfwltoyyatrev"/>
+	        
+	        <!-- <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/d5qmr8jfuad918" />
+	        <property name="javax.persistence.jdbc.user" value="postgres"/> -->
+	        
 	        <property name="javax.persistence.jdbc.password" value="4eeebf1a3d92d8b7545a2e9e995966e4abd9f1f83f5959cb50107405e2372613"/>
 			
 	        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"></property>
 	        <property name="hibernate.hbm2ddl.auto" value="update"/>
+	        <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
 	        <!--
 	        <property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
 			<property name="eclipselink.ddl-generation.output-mode" value="database" />
