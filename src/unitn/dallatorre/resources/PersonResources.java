@@ -92,7 +92,9 @@ public class PersonResources extends ResponseBuilder {
 		if( beginDate != null && endDate != null) {
 			activities.filterActivities(parseDate(beginDate),parseDate(endDate));
 		}
-		
+		if(activities.getActivity().size() == 0) {
+			return returnNotFound404();
+		}
 		return returnSuccess200(activities);
 	}
 	
