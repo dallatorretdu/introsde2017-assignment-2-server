@@ -4,7 +4,6 @@ import unitn.dallatorre.entities.Activity;
 import unitn.dallatorre.entities.ActivityType;
 import unitn.dallatorre.entities.PeopleWrapper;
 import unitn.dallatorre.entities.Person;
-import unitn.dallatorre.resources.exception.HelpMeExceptionMapper;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
