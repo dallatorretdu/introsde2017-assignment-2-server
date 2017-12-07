@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="People")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PeopleWrapper implements Serializable{
-	
+	// Wrapper use to encapsulate a list of Person objects into a People parent element
 	protected List<Person> person;
 	
 	public List<Person> getPersons() {
@@ -20,7 +20,7 @@ public class PeopleWrapper implements Serializable{
 	public void setPersons(List<Person> personList) {
 		person = personList;
 	}
-	
+	// Method used to load all the Person elements from the Db
 	public void readAllPersons() {
 		person = Person.getAllPersons();
 	}

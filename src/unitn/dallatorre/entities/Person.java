@@ -29,14 +29,14 @@ import unitn.dallatorre.dao.PersonActivitiesDao;
 
 @Entity
 @Table(name="Person")
-@NamedQuery(name="Person.findAll", query="SELECT p FROM Person p")
+@NamedQuery(name="Person.findAll", query="SELECT p FROM Person p") // explicitly declared maned query here, not sure why I'm not refactoring it in the method
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Person implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
     @XmlAttribute(name = "id", required = true)
-    private Integer id;
+    private Integer id;								// ID is automatically generated
     
 	@XmlElement(required = true)
     private String firstname;
@@ -46,9 +46,9 @@ public class Person implements Serializable{
     private Date birthdate;   
     @XmlElement(required = false)
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-    private List<Activity> activitypreference;
+    private List<Activity> activitypreference;		// ActivityPreference is a list One:Many fetched as eagerly and cascaded as ALL (no merge)
 
-	
+	//Getters and Setters
 	public Integer getId() {
 		return id;
 	}
@@ -88,7 +88,7 @@ public class Person implements Serializable{
 	public void setActivitypreference(List<Activity> activitypreference) {
 		this.activitypreference = activitypreference;
 	}
-	
+	// To String method for easy printing
 	public String toString() {
 		String out = this.getFirstname() + " " + this.getLastname() + "<br>   Activities: ";
 		for (Activity activity: this.getActivitypreference()) {
@@ -96,7 +96,7 @@ public class Person implements Serializable{
 		}
 		return out;
 	}
-
+	// Persistence methods
 	public static Person savePerson(Person p) {
 		EntityManager em = PersonActivitiesDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -144,7 +144,7 @@ public class Person implements Serializable{
 		PersonActivitiesDao.instance.closeConnections(em);
 		return p;
 	}
-	
+	// Get all the Person elements form the DB using a Named Query
 	public static List<Person> getAllPersons() {
 		EntityManager em = PersonActivitiesDao.instance.createEntityManager();
 		TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p",Person.class);

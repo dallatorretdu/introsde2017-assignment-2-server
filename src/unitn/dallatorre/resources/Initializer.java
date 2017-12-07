@@ -40,27 +40,27 @@ public class Initializer extends ResponseBuilder {
 	@Context
 	Request request;
 	
+	// Accepts only a GET
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response hello() {
-		
-		ActivityType t1 = generateAndSaveActivityType("Sport");
+		ActivityType t1 = generateAndSaveActivityType("Sport");		// generate 3 TYPES
 		ActivityType t2 = generateAndSaveActivityType("Social");
 		ActivityType t3 = generateAndSaveActivityType("Dota");
-		
+																	// Generate 5 Activities
 		Activity a1 = generateAndSaveActivity(t1, "Moving on your own power", "Running", "Albere");
 		Activity a2 = generateAndSaveActivity(t1, "Going on 2 wheels", "Cycling", "Lung  Adige");
 		Activity a3 = generateAndSaveActivity(t2, "Moving randomly", "Dancing", "Papafico");
 		Activity a4 = generateAndSaveActivity(t2, "Getting drunk", "Drinking", "H-Acca");
 		Activity a5 = generateAndSaveActivity(t3, "DOTA is Life", "DOTA", "col Tonno");
-
+																	// Generate 5 persons
 		Person p1 = generateAndSavePerson(a1, "Mario", "Rossi");
 		Person p2 = generateAndSavePerson(a2, "Giulio", "Dallatorre");
 		Person p3 = generateAndSavePerson(a3, "Stefano", "Tavonatti");
 		Person p4 = generateAndSavePerson(a4, "Pinco", "Pallino");
 		Person p5 = generateAndSavePerson(a5, "Manuel", "Dezulian");
-		
+																	// Generate the People wrapper object
 		List<Person> personList = new ArrayList<Person>();
 		personList.add(p1);
 		personList.add(p2);
@@ -68,12 +68,12 @@ public class Initializer extends ResponseBuilder {
 		personList.add(p4);
 		personList.add(p5);
 		PeopleWrapper people = new PeopleWrapper();
-		people.setPersons(personList);
+		people.setPersons(personList);								// Return the people Wrapper as response
 		
 		return returnSuccess200(people);
 		
 	}
-	
+	// Method that creates a person and saves it in teh persistence unit
 	private Person generateAndSavePerson(Activity activity, String firstname, String lastname) {
 		Person p = new Person();
 		p.setFirstname(firstname);
@@ -84,7 +84,7 @@ public class Initializer extends ResponseBuilder {
 		p.setActivitypreference(activitypreference);
 		return Person.updatePerson(p);
 	}
-
+	// Method that creates an activity and saves it in teh persistence unit
 	private Activity generateAndSaveActivity(ActivityType activityType, String description, String name, String place) {
 		Activity a = new Activity();
 		a.setDescription(description);
@@ -95,7 +95,7 @@ public class Initializer extends ResponseBuilder {
 		a=Activity.updateActivity(a);
 		return a;
 	}
-
+	// Method that creates a type and saves it in teh persistence unit
 	private ActivityType generateAndSaveActivityType(String activityTypeName) {
 		ActivityType t1 = new ActivityType();
 		t1.setType(activityTypeName);

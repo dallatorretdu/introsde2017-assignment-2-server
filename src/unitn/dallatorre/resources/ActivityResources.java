@@ -17,15 +17,15 @@ public class ActivityResources extends ResponseBuilder{
 	UriInfo uriInfo;
 	@Context
 	Request request;
-	
+	// Activity_types resource only accepts GET
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response getListOfActivityTypes() {
-		ActivityTypesWrapper activityTypes = new ActivityTypesWrapper();
+		ActivityTypesWrapper activityTypes = new ActivityTypesWrapper();		// use the activity types wrapper
 		activityTypes.readAllTypes();
 		if (activityTypes.getActivityTypes() == null || activityTypes.getActivityTypes().size()==0) {
 			return returnNotFound404();
-		}
+		}																		// return the object
 		return returnSuccess200(activityTypes);
 	}
 }

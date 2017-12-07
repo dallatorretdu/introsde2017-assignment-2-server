@@ -21,12 +21,12 @@ import unitn.dallatorre.dao.PersonActivitiesDao;
 public class ActivityType implements Serializable {
 	@Id
     @XmlElement(name = "id", required = true)
-    private String type;
+    private String type;						// ID, not automatically Generated, it's a String
 
 	public ActivityType() {
 		
 	}
-	
+	// Getters and setters
 	public String getType() {
 		return type;
 	}
@@ -34,7 +34,7 @@ public class ActivityType implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+	// persistence Methods
 	public static ActivityType saveActivityType(ActivityType t) {
 		EntityManager em = PersonActivitiesDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -64,20 +64,21 @@ public class ActivityType implements Serializable {
 	    tx.commit();
 	    PersonActivitiesDao.instance.closeConnections(em);
 	}
-	
+	// FIND a type by it's ID
 	public static ActivityType getById(String id) {
 		EntityManager em = PersonActivitiesDao.instance.createEntityManager();
 		ActivityType a = em.find(ActivityType.class, id);
 		PersonActivitiesDao.instance.closeConnections(em);
 		return a;
 	}
-	
+	// GET all the activity types as a List using a Typed Query
 	public static List<ActivityType> getAllTypes() {
 		EntityManager em = PersonActivitiesDao.instance.createEntityManager();
 		TypedQuery<ActivityType> query = em.createQuery("SELECT type FROM ActivityType type",ActivityType.class);
 		return query.getResultList();
 	}
 	
+	// Overridden equals method to check if the Type (String) is equals
 	@Override
 	public boolean equals(Object obj) {
 		return this.getType().equals(((ActivityType) obj).getType());

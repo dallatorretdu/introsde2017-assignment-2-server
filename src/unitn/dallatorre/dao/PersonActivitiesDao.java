@@ -6,7 +6,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public enum PersonActivitiesDao {
-	
+	// Standard DAO
 	instance;
 	private EntityManagerFactory emf;
 	

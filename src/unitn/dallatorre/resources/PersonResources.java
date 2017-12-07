@@ -28,12 +28,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-/*
- * TODO 
- * - There is a problem with the EntityManager injection through @PersistenceUnit or @PersistenceContext
- * - will look into it later
- */
-
+// Main resource /PERSON
 @Path("/person")
 public class PersonResources extends ResponseBuilder {
 
@@ -49,26 +44,26 @@ public class PersonResources extends ResponseBuilder {
 	public Response hello() {
 		PeopleWrapper people = new PeopleWrapper();
 		people.readAllPersons();
-		List<Person> personList = people.getPersons();
+		List<Person> personList = people.getPersons();		// GET all the person in DB and create the people wrapper
 		if(personList.size()==0) {
 			return returnNotFound404();
 		}
-		for (final Person person : personList) {
-			if(person.getActivitypreference().size()>0) {
+		for (final Person person : personList) {			// FOR EACH person
+			if(person.getActivitypreference().size()>0) {	// GET only the latest Activity
 		        Activity latestActivity = person.getActivitypreference().get(person.getActivitypreference().size()-1);
-		        latestActivity.setType(null);
+		        latestActivity.setType(null);				// remove it's activity Type
 		        person.getActivitypreference().clear();
-		        person.getActivitypreference().add(latestActivity);
+		        person.getActivitypreference().add(latestActivity);	// SET as the only activity
 			}
 		}
-		return returnSuccess200(people);
+		return returnSuccess200(people);					// Return the people (with only 1 activity)
 	}
 	
 	@GET
 	@Path("{personId}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response getPerson(@PathParam("personId") int id) {		
-		Person person = Person.getPersonById(id);
+		Person person = Person.getPersonById(id);			// GET Person/{id} returns the person and all it's data
 		if(person == null) {
 			return returnNotFound404();
 		}
